@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurotext Processing</title>
+</head>
+<body>
+
+    <!-- Neurotext displayed on the page -->
+    <div id="neurotext">
+        <!-- Paste your neurotext here manually for each page -->
+        subtitle appearance > has issues > traditional design, traditional design > characterized by > [white font, black outline], traditional design > compared to > web design standards, traditional design > creates > poor readability, poor readability > affected by > background image interference. contrast issues > manifests when > [background contains black and white, letter shapes unclear], contrast > should achieve > visual distinction, contrast > current approach > [white text, black outline], contrast > problems > lost when background matches colors. video layout solution > utilizes > black bars, black bars > located at > [top screen, bottom screen], black bars > provides > subtitle space, video position > can be adjusted > vertically, video position > accessed through > hidden hotkeys, mplayer > supports > vertical adjustment, vertical adjustment > creates > more space for subtitles. font styling > includes > [thick outline, blur effect], blur effect > creates > uniform shadow, shadow > appears as > oval field, shadow > improves > text visibility, video processing > can include > [selective blur, desaturation, darkening], video processing > applies to > area under subtitles, area under subtitles > can be > [rectangular window, blurry cloud]. creative implementation > example > mr robot show, mr robot styling > includes > [monospace font, left alignment], styling choice > complements > unusual frame composition, styling choice > enhances > viewing experience. baseline recommendations > includes > [neutral fonts, medium thickness, white color, thick black outline], neutral fonts > examples > [helvetica, arial, san francisco], design approach > should consider > content context, design approach > should balance > [functionality, visual appeal].
+    </div>
+
+    <!-- Row of buttons for different processing types -->
+    <div id="buttons">
+        <button onclick="processText('summary')">Summary</button>
+        <button onclick="processText('fun post')">Fun Post</button>
+        <button onclick="processText('article')">Article</button>
+    </div>
+
+    <!-- Container to show output below the neurotext and buttons -->
+    <div id="output"></div>
+
+    <!-- Loading indicator -->
+    <div id="loading" style="display: none;">Processing, please wait...</div>
+
+    <script>
+        async function processText(texttype) {
+            const neurotext = document.getElementById('neurotext').innerText;
+            const outputElement = document.getElementById('output');
+            const loadingElement = document.getElementById('loading');
+
+            // Show loading indicator
+            loadingElement.style.display = 'block';
+
+            try {
+                // Send request to the backend
+                const response = await fetch('34.45.158.198:5000/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        neurotext: neurotext,
+                        texttype: texttype
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to process text');
+                }
+
+                const result = await response.json();
+
+                // Append the response to the output area
+                const resultDiv = document.createElement('div');
+                resultDiv.textContent = `${texttype}: ${result.output || 'No output received'}`;
+                outputElement.appendChild(resultDiv);
+                
+            } catch (error) {
+                const errorDiv = document.createElement('div');
+                errorDiv.textContent = 'Error: ' + error.message;
+                outputElement.appendChild(errorDiv);
+            } finally {
+                // Hide loading indicator
+                loadingElement.style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
