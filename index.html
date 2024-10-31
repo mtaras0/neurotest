@@ -57,7 +57,7 @@
 
                 // Append the response to the output area
                 const resultDiv = document.createElement('div');
-                resultDiv.textContent = `${result.output || 'No output received'}`;
+                resultDiv.innerHTML = `${result.output || 'No output received'}`;
                 outputElement.appendChild(resultDiv);
                 
             } catch (error) {
